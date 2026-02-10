@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TheBountyForge">
+    <meta name="theme-color" content="#0a0e27">
+
+```
+<title>TheBountyForge - Where Rookies Become Pros</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap');
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    :root {
+        --bg-dark: #0a0e27;
+        --bg-darker: #070b1f;
+        --bg-card: #111936;
+        --accent-primary: #ff6b35;
+        --accent-secondary: #f7931e;
+        --accent-forge: #ffd700;
+        --text-light: #e8e9ed;
+        --text-dim: #9ca3af;
+        --success: #10b981;
+        --warning: #fbbf24;
+        --error: #ef4444;
+        --critical: #dc2626;
+        
+        --font-display: 'Outfit', sans-serif;
+        --font-mono: 'Space Mono', monospace;
+        
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+        --shadow-glow: 0 0 20px rgba(255, 107, 53, 0.3);
+    }
+    
+    body {
+        font-family: var(--font-display);
+        background: var(--bg-dark);
+        color: var(--text-light);
+        overflow-x: hidden;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        position: relative;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Animated background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(247, 147, 30, 0.08) 0%, transparent 50%);
+        animation: bgPulse 15s ease-in-out infinite alternate;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    @keyframes bgPulse {
+        0% { opacity: 0.3; }
+        100% { opacity: 0.6; }
+    }
+    
+    /* Main container */
+    .app-container {
+        position: relative;
+        z-index: 1;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    
+    /* Header */
+    .header {
+        background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-card) 100%);
+        padding: 2rem 1.5rem;
+        border-bottom: 3px solid var(--accent-primary);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .logo-icon {
+        font-size: 2.5rem;
+        animation: forgeGlow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes forgeGlow {
+        0% { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5)); }
+        100% { filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.8)); }
+    }
+    
+    .logo-text h1 {
+        font-size: 1.75rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-forge));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.5px;
+    }
+    
+    .logo-text p {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        font-weight: 300;
+        margin-top: 0.25rem;
+    }
+    
+    .status-badge {
+        background: var(--bg-card);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 107, 53, 0.3);
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--success);
+        animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
+    /* Main content */
+    .main-content {
+        padding: 2rem 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    /* Target section */
+    .target-section {
+        background: var(--bg-card);
+        padding: 2rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .section-icon {
+        font-size: 1.5rem;
+    }
+    
+    .input-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .input-label {
+        display: block;
+        font-size: 0.875rem;
+        color: var(--text-dim);
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .input-field {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        background: var(--bg-darker);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: var(--text-light);
+        font-size: 1rem;
+        font-family: var(--font-mono);
+        transition: all 0.3s ease;
+    }
+    
+    .input-field:focus {
+        outline: none;
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    }
+    
+    /* Warning box */
+    .warning-box {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+        border: 2px solid var(--warning);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        gap: 0.75rem;
+    }
+    
+    .warning-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+    
+    .warning-text {
+        font-size: 0.875rem;
+        line-height: 1.5;
+        font-weight: 500;
+    }
+    
+    /* Scan options */
+    .scan-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .option-card {
+        background: var(--bg-darker);
+        padding: 1.25rem;
+        border-radius: 12px;
+        border: 2px solid rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .option-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .option-card.active::before {
+        opacity: 0.1;
+    }
+    
+    .option-card.active {
+        border-color: var(--accent-primary);
+        box-shadow: var(--shadow-glow);
+    }
+    
+    .option-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .option-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+    
+    .option-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    
+    .option-checkbox {
+        width: 24px;
+        height: 24px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-card);
+        transition: all 0.3s ease;
+    }
+    
+    .option-card.active .option-checkbox {
+        background: var(--accent-primary);
+        border-color: var(--accent-primary);
+    }
+    
+    .option-checkbox::after {
+        content: '✓';
+        color: white;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .option-card.active .option-checkbox::after {
+        opacity: 1;
+    }
+    
+    .option-description {
+        font-size: 0.8125rem;
+        color: var(--text-dim);
+        line-height: 1.4;
+    }
+    
+    /* Action buttons */
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .btn {
+        flex: 1;
+        padding: 1.25rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-family: var(--font-display);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    
+    .btn:active::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        color: white;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .btn-primary:hover {
+        box-shadow: var(--shadow-glow);
+        transform: translateY(-2px);
+    }
+    
+    .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .btn-secondary {
+        background: var(--bg-card);
+        color: var(--text-light);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .btn-secondary:hover {
+        border-color: var(--accent-primary);
+    }
+    
+    /* Results section */
+    .results-section {
+        background: var(--bg-card);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: var(--shadow-md);
+        margin-bottom: 2rem;
+    }
+    
+    .results-tabs {
+        display: flex;
+        background: var(--bg-darker);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .results-tabs::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .tab {
+        padding: 1rem 1.5rem;
+        border: none;
+        background: transparent;
+        color: var(--text-dim);
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        font-family: var(--font-display);
+    }
+    
+    .tab.active {
+        color: var(--accent-primary);
+        border-bottom-color: var(--accent-primary);
+    }
+    
+    .tab-content {
+        padding: 1.5rem;
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .result-item {
+        background: var(--bg-darker);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.75rem;
+        border-left: 4px solid var(--text-dim);
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .result-item.critical {
+        border-left-color: var(--critical);
+        background: rgba(220, 38, 38, 0.05);
+    }
+    
+    .result-item.warning {
+        border-left-color: var(--warning);
+        background: rgba(251, 191, 36, 0.05);
+    }
+    
+    .result-item.success {
+        border-left-color: var(--success);
+        background: rgba(16, 185, 129, 0.05);
+    }
+    
+    .result-item.info {
+        border-left-color: #3b82f6;
+        background: rgba(59, 130, 246, 0.05);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-dim);
+    }
+    
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.3;
+    }
+    
+    .empty-state-text {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-state-subtext {
+        font-size: 0.875rem;
+    }
+    
+    /* Loading animation */
+    .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        gap: 0.75rem;
+    }
+    
+    .loading-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--accent-primary);
+        animation: loadingBounce 1.4s ease-in-out infinite;
+    }
+    
+    .loading-dot:nth-child(1) { animation-delay: 0s; }
+    .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+    
+    @keyframes loadingBounce {
+        0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+        40% { transform: scale(1.2); opacity: 1; }
+    }
+    
+    /* Summary card */
+    .summary-card {
+        background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-card) 100%);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        margin-bottom: 1rem;
+    }
+    
+    .summary-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-forge));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-top: 0.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .header {
+            padding: 1.5rem 1rem;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.5rem;
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.75rem;
+        }
+        
+        .main-content {
+            padding: 1.5rem 1rem;
+        }
+        
+        .scan-options {
+            grid-template-columns: 1fr;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+    
+    /* Touch improvements */
+    @media (hover: none) {
+        .btn:hover {
+            transform: none;
+        }
+        
+        .option-card:active {
+            transform: scale(0.98);
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">⚒️</div>
+                    <div class="logo-text">
+                        <h1>TheBountyForge</h1>
+                        <p>Where Rookies Become Pros</p>
+                    </div>
+                </div>
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    <span id="statusText">Ready</span>
+                </div>
+            </div>
+        </header>
+
+```
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Target Section -->
+        <section class="target-section">
+            <h2 class="section-title">
+                <span class="section-icon">🎯</span>
+                Target Website
+            </h2>
+            
+            <div class="input-group">
+                <label class="input-label">Enter the website you want to test:</label>
+                <input 
+                    type="text" 
+                    class="input-field" 
+                    id="targetInput" 
+                    placeholder="example.com"
+                    value="example.com"
+                />
+            </div>
+            
+            <div class="warning-box">
+                <div class="warning-icon">⚠️</div>
+                <div class="warning-text">
+                    <strong>Important:</strong> Only test websites you have permission to scan! Unauthorized testing is illegal.
+                </div>
+            </div>
+        </section>
+
+        <!-- Scan Options -->
+        <section class="target-section">
+            <h2 class="section-title">
+                <span class="section-icon">📋</span>
+                What to Check
+            </h2>
+            
+            <div class="scan-options">
+                <div class="option-card active" data-option="subdomains">
+                    <div class="option-content">
+                        <div class="option-header">
+                            <div class="option-title">
+                                <span>🔍</span>
+                                <span>Find Subdomains</span>
+                            </div>
+                            <div class="option-checkbox"></div>
+                        </div>
+                        <p class="option-description">Discover all parts of the website</p>
+                    </div>
+                </div>
+                
+                <div class="option-card active" data-option="ports">
+                    <div class="option-content">
+                        <div class="option-header">
+                            <div class="option-title">
+                                <span>🚪</span>
+                                <span>Scan Open Ports</span>
+                            </div>
+                            <div class="option-checkbox"></div>
+                        </div>
+                        <p class="option-description">Check which services are running</p>
+                    </div>
+                </div>
+                
+                <div class="option-card active" data-option="directories">
+                    <div class="option-content">
+                        <div class="option-header">
+                            <div class="option-title">
+                                <span>📁</span>
+                                <span>Find Hidden Pages</span>
+                            </div>
+                            <div class="option-checkbox"></div>
+                        </div>
+                        <p class="option-description">Look for secret files and folders</p>
+                    </div>
+                </div>
+                
+                <div class="option-card active" data-option="vulnerabilities">
+                    <div class="option-content">
+                        <div class="option-header">
+                            <div class="option-title">
+                                <span>🛡️</span>
+                                <span>Check Vulnerabilities</span>
+                            </div>
+                            <div class="option-checkbox"></div>
+                        </div>
+                        <p class="option-description">Test for security weaknesses</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="startBtn">
+                <span>🚀</span>
+                <span>Start Scanning</span>
+            </button>
+            <button class="btn btn-secondary" id="stopBtn" style="display: none;">
+                <span>⏹️</span>
+                <span>Stop Scanning</span>
+            </button>
+            <button class="btn btn-secondary" id="saveBtn">
+                <span>💾</span>
+                <span>Save Report</span>
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <section class="results-section">
+            <div class="results-tabs">
+                <button class="tab active" data-tab="overview">📊 Overview</button>
+                <button class="tab" data-tab="subdomains">🔍 Subdomains</button>
+                <button class="tab" data-tab="ports">🚪 Ports</button>
+                <button class="tab" data-tab="directories">📁 Directories</button>
+                <button class="tab" data-tab="vulnerabilities">🛡️ Vulnerabilities</button>
+            </div>
+            
+            <div class="tab-content active" id="overview-content">
+                <div class="empty-state">
+                    <div class="empty-state-icon">⚒️</div>
+                    <div class="empty-state-text">Ready to Forge</div>
+                    <p class="empty-state-subtext">Run a scan to see results</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="subdomains-content">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <div class="empty-state-text">No Subdomains Found</div>
+                    <p class="empty-state-subtext">Start a scan to discover subdomains</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="ports-content">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🚪</div>
+                    <div class="empty-state-text">No Ports Scanned</div>
+                    <p class="empty-state-subtext">Run port scanning to see results</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="directories-content">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📁</div>
+                    <div class="empty-state-text">No Directories Found</div>
+                    <p class="empty-state-subtext">Scan for hidden files and folders</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="vulnerabilities-content">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🛡️</div>
+                    <div class="empty-state-text">No Vulnerabilities Checked</div>
+                    <p class="empty-state-subtext">Run security assessment</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="thebountyforge-app.js"></script>
+```
+
+</body>
+</html>
