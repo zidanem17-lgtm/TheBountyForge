@@ -1,0 +1,28 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Generated scan reports
+thebountyforge_report_*.txt
+
+# Logs
+*.log
+
+# Node (if a build step is ever added)
+node_modules/
+npm-debug.log*
+
+# Icons/screenshots (add your own — not tracked)
+icon-192.png
+icon-512.png
+screenshot1.png
