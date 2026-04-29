@@ -1,0 +1,15 @@
+{
+  "name": "thebountyforge",
+  "version": "1.0.0",
+  "description": "Where Rookie Hackers Become Pros - Bug Bounty Scanner",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
+  }
+}

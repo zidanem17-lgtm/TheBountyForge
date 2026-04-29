@@ -557,3 +557,6 @@ class TheBountyForge {
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new TheBountyForge();
 });
+
+// Allow CommonJS import in test environments
+if (typeof module !== 'undefined') module.exports = TheBountyForge;
