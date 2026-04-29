@@ -26,3 +26,4 @@ npm-debug.log*
 icon-192.png
 icon-512.png
 screenshot1.png
+coverage/

@@ -1085,7 +1085,9 @@ describe('TheBountyForge', () => {
             consoleSpy.mockRestore();
         });
 
-        test('calls preventDefault on the beforeinstallprompt event', () => {
+        test('calls preventDefault on the beforeinstallprompt event via the registered listener', () => {
+            // app (created in beforeEach) registers the listener via setupPWA.
+            // Dispatching the event on window exercises the actual app handler.
             const event = new Event('beforeinstallprompt', { cancelable: true });
             event.preventDefault = jest.fn();
             window.dispatchEvent(event);
